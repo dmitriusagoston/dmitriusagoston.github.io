@@ -8,11 +8,19 @@
     <script>
         const params = new URLSearchParams(window.location.search);
         const sid = params.get('session_id');
+        const target = `chrome-extension://moggcajjgngpbcemjagdjpfhkbmkjkjk/success.html?session_id=${sid}`;
+    
         if (sid) {
-            // This is the magic jump back to your locked extension ID
-            window.location.href = `chrome-extension://moggcajjgngpbcemjagdjpfhkbmkjkjk/success.html?session_id=${sid}`;
-        } else {
-            document.body.innerHTML = "No session found. Please return to the extension.";
+            // Attempt auto-redirect
+            window.location.href = target;
+    
+            // Backup in case Chrome blocks auto-redirect
+            document.body.innerHTML = `
+                <h1>Payment Received!</h1>
+                <p>If you aren't redirected automatically, click below:</p>
+                <a href="${target}" style="padding: 10px 20px; background: blue; color: white; text-decoration: none; border-radius: 5px;">
+                    Activate My Extension
+                </a>`;
         }
     </script>
 </body>
